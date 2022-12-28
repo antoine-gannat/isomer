@@ -1,39 +1,32 @@
 {
   "name": "isomer",
-  "version": "0.2.6",
+  "version": "0.0.1",
   "description": "A simple isometric graphics library for HTML5 canvas",
-  "author": "Jordan Scales <scalesjordan@gmail.com>",
-  "license": "MIT",
-  "directories": {
-    "test": "test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jdan/isomer.git"
-  },
-  "keywords": [
-    "isometric",
-    "graphics",
-    "canvas",
-    "3D"
+  "contributors": [
+    {
+      "name": "Jordan Scales",
+      "email": "scalesjordan@gmail.com"
+    },
+    {
+      "name": "Antoine Gannat",
+      "email": "antoine.gannat@gmail.com"
+    }
   ],
-  "main": "index.js",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "dist": "gulp",
-    "test": "gulp test"
+    "start": "tsc --watch",
+    "build": "yarn clean && tsc",
+    "clean": "rimraf ./lib",
+    "lint": "eslint src/** --ext .ts --ext .tsx --fix --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
-    "event-stream": "^3.3.0",
-    "gulp": "^3.8.11",
-    "gulp-buffer": "0.0.2",
-    "gulp-header": "^1.2.2",
-    "gulp-util": "^3.0.4",
-    "gulp-webpack": "^1.3.2",
-    "jscs": "^1.12.0",
-    "jscs-loader": "0.0.5",
-    "open": "0.0.5",
-    "strftime": "^0.9.0",
-    "webpack": "^1.8.2",
-    "webpack-dev-server": "^1.8.0"
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.30.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.4"
   }
 }
