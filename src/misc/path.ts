@@ -1,10 +1,10 @@
-import { IPath, IPoint, ScaleBy, TranslateBy } from "../types";
+import { ScaleBy, TranslateBy } from "../types";
 import { Point } from "./point";
 
-export class Path implements IPath {
-  public points: IPoint[];
+export class Path {
+  public points: Point[];
 
-  public static Rectangle(origin: IPoint, width = 1, height = 1) {
+  public static Rectangle(origin: Point, width = 1, height = 1) {
     return new Path([
       origin,
       new Point(origin.x + width, origin.y, origin.z),
@@ -13,7 +13,7 @@ export class Path implements IPath {
     ]);
   }
 
-  public static Circle(origin: IPoint, radius: number, vertices = 20) {
+  public static Circle(origin: Point, radius: number, vertices = 20) {
     const path = new Path();
 
     for (let i = 0; i < vertices; i++) {
@@ -30,53 +30,53 @@ export class Path implements IPath {
     return path;
   }
 
-  public constructor(points: IPoint[] = []) {
+  public constructor(points: Point[] = []) {
     this.points = points.map((point) => point.duplicate());
   }
 
-  public duplicate(): IPath {
+  public duplicate(): Path {
     return new Path(this.points);
   }
 
-  public push(point: IPoint): IPath {
+  public push(point: Point): Path {
     this.points.push(point);
     return this;
   }
 
-  public reverse(): IPath {
+  public reverse(): Path {
     this.points = this.points.reverse();
     return this;
   }
 
-  public translate(delta: TranslateBy): IPath {
+  public translate(delta: TranslateBy): Path {
     this.points.forEach((point) => {
       point.translate(delta);
     });
     return this;
   }
 
-  public scale(origin: IPoint, multiplier: ScaleBy): IPath {
+  public scale(origin: Point, multiplier: ScaleBy): Path {
     this.points.forEach((point) => {
       point.scale(origin, multiplier);
     });
     return this;
   }
 
-  public rotateX(origin: IPoint, angle: number): IPath {
+  public rotateX(origin: Point, angle: number): Path {
     this.points.forEach((point) => {
       point.rotateX(origin, angle);
     });
     return this;
   }
 
-  public rotateY(origin: IPoint, angle: number): IPath {
+  public rotateY(origin: Point, angle: number): Path {
     this.points.forEach((point) => {
       point.rotateY(origin, angle);
     });
     return this;
   }
 
-  public rotateZ(origin: IPoint, angle: number): IPath {
+  public rotateZ(origin: Point, angle: number): Path {
     this.points.forEach((point) => {
       point.rotateZ(origin, angle);
     });

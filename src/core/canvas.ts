@@ -1,4 +1,5 @@
-import { IColor, IPoint } from "../types";
+import { Color } from "../misc/color";
+import { Point } from "../misc/point";
 
 export class Canvas {
   public width: number;
@@ -20,7 +21,7 @@ export class Canvas {
     return this;
   }
 
-  public path(points: IPoint[], color: IColor) {
+  public path(points: Point[], color: Color) {
     if (!this.ctx) {
       throw new Error("context is null");
     }

@@ -1,11 +1,11 @@
 import { Isomer } from "../core/isomer";
-import { CanvasImage } from "../misc/canvasImage";
+import { Image } from "./image";
 import { Point } from "../misc/point";
 
 /**
  * Used to render an image on the isometric canvas.
  */
-export class Sprite extends CanvasImage {
+export class Sprite extends Image {
   private frameIndex = 0;
   private frameCount: number;
 

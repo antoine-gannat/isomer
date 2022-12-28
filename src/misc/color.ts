@@ -1,6 +1,4 @@
-import { IColor } from "../types";
-
-export class Color implements IColor {
+export class Color {
   public r: number;
   public g: number;
   public b: number;
@@ -41,8 +39,8 @@ export class Color implements IColor {
 
   public lighten(
     percentage: number,
-    lightColor: IColor = new Color(255, 255, 255)
-  ): IColor {
+    lightColor: Color = new Color(255, 255, 255)
+  ): Color {
     this.r = (lightColor.r / 255) * this.r;
     this.g = (lightColor.g / 255) * this.g;
     this.b = (lightColor.b / 255) * this.b;

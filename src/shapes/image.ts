@@ -1,10 +1,10 @@
 import { Isomer } from "../core/Isomer";
-import { Point } from "./Point";
+import { Point } from "../misc/Point";
 
 /**
  * Used to render an image on the isometric canvas.
  */
-export class CanvasImage {
+export class Image {
   protected ratio: number;
 
   public constructor(

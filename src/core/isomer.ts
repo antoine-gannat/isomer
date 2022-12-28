@@ -1,5 +1,5 @@
 import { RESIZE_HANDLER_TIMEOUT } from "../constants";
-import { CanvasImage } from "../misc/canvasImage";
+import { Image } from "../shapes/image";
 import { Color } from "../misc/color";
 import { Events } from "../misc/events";
 import { Path } from "../misc/path";
@@ -7,15 +7,7 @@ import { Point } from "../misc/point";
 import { Vector } from "../misc/vector";
 import { Shape } from "../shapes/shape";
 import { Sprite } from "../shapes/sprite";
-import {
-  IColor,
-  IPath,
-  IPoint,
-  IsomerOptions,
-  IVector,
-  Position,
-  Transformation,
-} from "../types";
+import { IsomerOptions, Position, Transformation } from "../types";
 import { Canvas } from "./canvas";
 
 export class Isomer {
@@ -24,10 +16,10 @@ export class Isomer {
   public originX: number;
   public originY: number;
   private angle: number;
-  private lightPosition: IVector;
-  private lightAngle: IVector;
+  private lightPosition: Vector;
+  private lightAngle: Vector;
   private colorDifference: number;
-  private lightColor: IColor;
+  private lightColor: Color;
   private transformation: Transformation;
   private resizeTimeout: ReturnType<typeof setTimeout>;
   private Events: Events;
@@ -88,7 +80,7 @@ export class Isomer {
     this.lightAngle = this.lightPosition.normalize();
   }
 
-  public translatePoint(point: IPoint) {
+  public translatePoint(point: Point) {
     const xMap = new Point(
       point.x * this.transformation[0][0],
       point.x * this.transformation[0][1],
@@ -107,7 +99,7 @@ export class Isomer {
     return new Point(x, y, 0);
   }
 
-  public add(item: unknown, baseColor: IColor = new Color(120, 120, 120)) {
+  public add(item: unknown, baseColor: Color = new Color(120, 120, 120)) {
     if (Array.isArray(item)) {
       for (let i = 0; i < item.length; i++) {
         this.add(item[i], baseColor);
@@ -121,7 +113,7 @@ export class Isomer {
       for (let j = 0; j < paths.length; j++) {
         this.addPath(paths[j], baseColor);
       }
-    } else if (item instanceof CanvasImage || item instanceof Sprite) {
+    } else if (item instanceof Image || item instanceof Sprite) {
       item.render(this);
     }
   }
@@ -163,7 +155,7 @@ export class Isomer {
         : this.canvas.height / 2;
   }
 
-  private addPath(path: IPath, baseColor: IColor) {
+  private addPath(path: Path, baseColor: Color) {
     /* Compute color */
     const v1 = Vector.FromTwoPoints(path.points[1], path.points[0]);
     const v2 = Vector.FromTwoPoints(path.points[2], path.points[1]);

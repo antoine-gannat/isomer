@@ -1,6 +1,6 @@
-import { IPoint, ScaleBy, TranslateBy } from "../types";
+import { ScaleBy, TranslateBy } from "../types";
 
-export class Point implements IPoint {
+export class Point {
   public static Origin() {
     return new Point(0, 0, 0);
   }
@@ -21,7 +21,7 @@ export class Point implements IPoint {
     return Point.FromPoint(this);
   }
 
-  public translate(delta: TranslateBy): IPoint {
+  public translate(delta: TranslateBy): Point {
     const [x = 0, y = 0, z = 0] = delta;
     this.x += x;
     this.y += y;
@@ -29,7 +29,7 @@ export class Point implements IPoint {
     return this;
   }
 
-  public translateCpy(delta: TranslateBy): IPoint {
+  public translateCpy(delta: TranslateBy): Point {
     const [x = 0, y = 0, z = 0] = delta;
     const cpy = this.duplicate();
     cpy.x += x;
@@ -38,7 +38,7 @@ export class Point implements IPoint {
     return cpy;
   }
 
-  public scale(origin: IPoint, multiplier: ScaleBy) {
+  public scale(origin: Point, multiplier: ScaleBy) {
     const [x, y, z] = multiplier;
 
     this.translate([-origin.x, -origin.y, -origin.z]);
@@ -51,7 +51,7 @@ export class Point implements IPoint {
     return this;
   }
 
-  public rotateX(origin: IPoint, angle: number) {
+  public rotateX(origin: Point, angle: number) {
     this.translate([-origin.x, -origin.y, -origin.z]);
     const z = this.z * Math.cos(angle) - this.y * Math.sin(angle);
     const y = this.z * Math.sin(angle) + this.y * Math.cos(angle);
@@ -62,7 +62,7 @@ export class Point implements IPoint {
     return this;
   }
 
-  public rotateY(origin: IPoint, angle: number) {
+  public rotateY(origin: Point, angle: number) {
     this.translate([-origin.x, -origin.y, -origin.z]);
     const x = this.x * Math.cos(angle) - this.z * Math.sin(angle);
     const z = this.x * Math.sin(angle) + this.z * Math.cos(angle);
@@ -72,7 +72,7 @@ export class Point implements IPoint {
     return this;
   }
 
-  public rotateZ(origin: IPoint, angle: number) {
+  public rotateZ(origin: Point, angle: number) {
     this.translate([-origin.x, -origin.y, -origin.z]);
     const x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
     const y = this.x * Math.sin(angle) + this.y * Math.cos(angle);
@@ -86,7 +86,7 @@ export class Point implements IPoint {
     return this.x + this.y - 2 * this.z;
   }
 
-  public distance(to: IPoint) {
+  public distance(to: Point) {
     const dx = to.x - this.x;
     const dy = to.y - this.y;
     const dz = to.z - this.z;
