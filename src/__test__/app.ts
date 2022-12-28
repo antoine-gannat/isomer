@@ -9,7 +9,7 @@ import { Pyramid } from "../shapes/pyramid";
 const isomer = new Isomer(
   document.getElementById("canvas-1") as HTMLCanvasElement,
   {
-    canvasWidth: 20,
+    horizontalPrismCount: 20,
   }
 );
 

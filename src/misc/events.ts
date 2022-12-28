@@ -8,11 +8,11 @@ export class Events {
   public constructor(private Isomer: Isomer) {}
 
   private zoom(delta: number, scrollSpeed = 2) {
-    // scrool up
+    // scroll up
     if (delta > 0 && this.Isomer.scale - scrollSpeed > MIN_SCALE) {
       this.Isomer.setScale(this.Isomer.scale - scrollSpeed);
     } else if (delta < 0 && this.Isomer.scale + scrollSpeed < MAX_SCALE) {
-      // scrool down
+      // scroll down
       this.Isomer.setScale(this.Isomer.scale + scrollSpeed);
     }
   }

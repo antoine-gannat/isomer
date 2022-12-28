@@ -7,8 +7,18 @@ import { Point } from "../misc/point";
 import { Vector } from "../misc/vector";
 import { Shape } from "../shapes/shape";
 import { Sprite } from "../shapes/sprite";
-import { IsomerOptions, Position, Transformation } from "../types";
+import { Position, Transformation } from "../types";
 import { Canvas } from "./canvas";
+
+type IsomerOptions = {
+  // Width of the screen in prisms
+  horizontalPrismCount: number;
+  lightPosition?: Vector;
+  originX?: number;
+  originY?: number;
+  lightColor?: Color;
+  listenForUserInputs?: boolean;
+};
 
 export class Isomer {
   public canvas: Canvas;
@@ -133,7 +143,7 @@ export class Isomer {
   }
 
   private calculateScale(): number {
-    return Math.round(window.innerWidth / this.options.canvasWidth);
+    return Math.round(window.innerWidth / this.options.horizontalPrismCount);
   }
 
   private resizeHandler() {
