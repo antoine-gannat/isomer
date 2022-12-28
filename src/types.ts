@@ -72,15 +72,6 @@ export interface IColor {
   lighten: (percentage: number, lightColor: IColor) => IColor;
 }
 
-export interface ICanvas {
-  element: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D | null;
-  width: number;
-  height: number;
-  clear: () => void;
-  path: (points: IPoint[], color: IColor) => void;
-}
-
 export type IsomerOptions = {
   // Width of the screen in prisms
   canvasWidth: number;

@@ -1,6 +1,6 @@
-import { ICanvas, IColor, IPoint } from "../types";
+import { IColor, IPoint } from "../types";
 
-export class Canvas implements ICanvas {
+export class Canvas {
   public width: number;
   public height: number;
   public ctx: CanvasRenderingContext2D | null;

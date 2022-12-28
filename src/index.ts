@@ -9,12 +9,4 @@ export { Shape } from "./shapes/shape";
 export { Size } from "./misc/size";
 export { Vector } from "./misc/vector";
 
-export type {
-  ICanvas,
-  IColor,
-  IPath,
-  IPoint,
-  IShape,
-  IVector,
-  ISize,
-} from "./types";
+export type { IColor, IPath, IPoint, IShape, IVector, ISize } from "./types";

@@ -8,7 +8,6 @@ import { Vector } from "../misc/vector";
 import { Shape } from "../shapes/shape";
 import { Sprite } from "../shapes/sprite";
 import {
-  ICanvas,
   IColor,
   IPath,
   IPoint,
@@ -20,7 +19,7 @@ import {
 import { Canvas } from "./canvas";
 
 export class Isomer {
-  public canvas: ICanvas;
+  public canvas: Canvas;
   public scale: number;
   public originX: number;
   public originY: number;
