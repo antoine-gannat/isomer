@@ -4,10 +4,7 @@ import { Events } from "../misc/events";
 import { Path } from "../misc/path";
 import { Point } from "../misc/point";
 import { Vector } from "../misc/vector";
-import { Image } from "../shapes/image";
-import { Shape } from "../shapes/shape";
-import { Sprite } from "../shapes/sprite";
-import { Position, Transformation } from "../types";
+import { Drawable, Position, Transformation } from "../types";
 import { Canvas } from "./canvas";
 
 type IsomerOptions = {
@@ -38,10 +35,14 @@ export class Isomer {
   private Events: Events;
 
   public constructor(
-    canvas: HTMLCanvasElement,
+    canvas: HTMLCanvasElement | string,
     private options: IsomerOptions
   ) {
-    this.canvas = new Canvas(canvas);
+    this.canvas = new Canvas(
+      typeof canvas === "string"
+        ? (document.getElementById(canvas) as HTMLCanvasElement)
+        : canvas
+    );
     this.angle = Math.PI / 6;
 
     this.setScale(this.calculateScale());
@@ -114,24 +115,10 @@ export class Isomer {
   }
 
   /**
-   * Draw an item on the canvas
+   * Draw an item on the canvas.
    */
-  public add(
-    item: Path | Shape | Image | Sprite,
-    baseColor: Color = new Color(120, 120, 120)
-  ): void {
-    if (item instanceof Path) {
-      this.addPath(item, baseColor);
-    } else if (item instanceof Shape) {
-      /* Fetch paths ordered by distance to prevent overlaps */
-      const paths = item.orderPaths().paths;
-
-      for (let j = 0; j < paths.length; j++) {
-        this.addPath(paths[j], baseColor);
-      }
-    } else if (item instanceof Image) {
-      item.render(this);
-    }
+  public draw(item: Drawable): void {
+    item.render(this);
   }
 
   /**
@@ -144,7 +131,7 @@ export class Isomer {
   /**
    * Draw a grid on the canvas, useful for debugging.
    */
-  public drawGrid() {
+  public debugGrid() {
     for (
       let x = -this.options.horizontalPrismCount;
       x < this.options.horizontalPrismCount;
@@ -180,30 +167,10 @@ export class Isomer {
       window.removeEventListener("resize", this.resizeHandler);
   }
 
-  private calculateScale(): number {
-    return Math.round(window.innerWidth / this.options.horizontalPrismCount);
-  }
-
-  private resizeHandler() {
-    // use timeout to only call the resize handler once instead of calling it at every event
-    this.resizeTimeout && clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => {
-      this.resize(window.innerWidth, window.innerHeight, this.calculateScale());
-    }, RESIZE_HANDLER_TIMEOUT);
-  }
-
-  private calculateOrigins(): void {
-    this.originX =
-      this.options.originX !== undefined
-        ? this.options.originX
-        : this.canvas.width / 2;
-    this.originY =
-      this.options.originY !== undefined
-        ? this.options.originY
-        : this.canvas.height / 2;
-  }
-
-  private addPath(path: Path, baseColor: Color) {
+  /**
+   * Draw a path on the canvas.
+   */
+  public drawPath(path: Path, baseColor: Color): void {
     /* Compute color */
     const v1 = Vector.FromTwoPoints(path.points[1], path.points[0]);
     const v2 = Vector.FromTwoPoints(path.points[2], path.points[1]);
@@ -245,6 +212,29 @@ export class Isomer {
       return;
     }
     this.canvas.path(translatedPoints, color);
+  }
+
+  private calculateScale(): number {
+    return Math.round(window.innerWidth / this.options.horizontalPrismCount);
+  }
+
+  private resizeHandler() {
+    // use timeout to only call the resize handler once instead of calling it at every event
+    this.resizeTimeout && clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => {
+      this.resize(window.innerWidth, window.innerHeight, this.calculateScale());
+    }, RESIZE_HANDLER_TIMEOUT);
+  }
+
+  private calculateOrigins(): void {
+    this.originX =
+      this.options.originX !== undefined
+        ? this.options.originX
+        : this.canvas.width / 2;
+    this.originY =
+      this.options.originY !== undefined
+        ? this.options.originY
+        : this.canvas.height / 2;
   }
 
   /**

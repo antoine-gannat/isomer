@@ -1,41 +1,26 @@
 import { Isomer } from "../core/Isomer";
-import { Color } from "../misc/color";
 import { Point } from "../misc/point";
 import { Size } from "../misc/size";
 import { Prism } from "../shapes/prism";
 import { Cylinder } from "../shapes/cylinder";
 import { Pyramid } from "../shapes/pyramid";
 import { Shape } from "../shapes/shape";
+import { Color } from "../misc/color";
 
-const isomer = new Isomer(
-  document.getElementById("canvas-1") as HTMLCanvasElement,
-  {
-    horizontalPrismCount: 20,
-    listenForUserInputs: true,
-    handleResize: true,
-  }
-);
-
-let avg = 0;
-let count = 0;
+const isomer = new Isomer("canvas-1", {
+  horizontalPrismCount: 20,
+  listenForUserInputs: true,
+  handleResize: true,
+});
 
 const els: Shape[] = [];
 
-els.push(new Prism(Point.Origin(), new Size(3, 3, 1)));
-els.push(new Prism(new Point(0, 0, 0), new Size(1, 1, 1)));
-els.push(new Pyramid(new Point(0, 2, 1)));
-els.push(new Cylinder(new Point(2, 2, 1), 0.5, 35, 2));
+els.push(new Prism(Point.Origin(), new Size(3, 3, 1), new Color(230, 50, 50)));
+els.push(new Pyramid(new Point(0, 2, 1), undefined, new Color(40, 250, 50)));
+els.push(new Cylinder(new Point(2, 2, 1), 0.5, 35, 2, new Color(230, 10, 150)));
 
 setInterval(() => {
-  const start = performance.now();
   isomer.clear();
-  isomer.drawGrid();
-  els.forEach((el) => isomer.add(el, new Color(0, 155, 50)));
-  // isomer.add(els[0], new Color(0, 155, 50));
-  const end = performance.now();
-  avg += end - start;
-  count++;
-  if (count % 30 == 0) {
-    console.log("avg", avg / count);
-  }
+  isomer.debugGrid();
+  els.forEach((el) => isomer.draw(el));
 }, 1000 / 60);

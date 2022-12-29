@@ -1,9 +1,17 @@
+import { DEFAULT_COLOR } from "../constants";
+import { Color } from "../misc/color";
 import { Path } from "../misc/path";
 import { Point } from "../misc/point";
 import { ScaleBy, TranslateBy } from "../types";
 
+import type { Isomer } from "../core/Isomer";
+
 export class Shape {
   public paths: Path[];
+
+  public constructor(paths: Path[] = [], private color: Color = DEFAULT_COLOR) {
+    this.paths = paths.map((path) => path.duplicate());
+  }
 
   public static Extrude(path: Path, height = 1, originShape?: Shape) {
     const shape = originShape || new Shape();
@@ -28,15 +36,18 @@ export class Shape {
     return shape;
   }
 
-  public constructor(paths: Path[] = []) {
-    this.paths = paths.map((path) => path.duplicate());
+  public render(isomer: Isomer): void {
+    /* Fetch paths ordered by distance to prevent overlaps */
+    const paths = this.orderPaths().paths;
+
+    paths.forEach((path) => isomer.drawPath(path, this.color));
   }
 
   public duplicate(): Shape {
     return new Shape(this.paths);
   }
 
-  public log() {
+  public log(): void {
     this.paths.forEach((path, index) => {
       console.log(
         index,

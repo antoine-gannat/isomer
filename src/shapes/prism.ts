@@ -1,11 +1,12 @@
+import { Color } from "../misc/color";
 import { Path } from "../misc/path";
 import { Point } from "../misc/point";
 import { Size } from "../misc/size";
 import { Shape } from "./shape";
 
 export class Prism extends Shape {
-  public constructor(origin: Point, dimensions: Size) {
-    super();
+  public constructor(origin: Point, dimensions: Size, color?: Color) {
+    super(undefined, color);
     const { width: dx = 1, height: dy = 1, depth: dz = 1 } = dimensions;
 
     /* Squares parallel to the x-axis */
