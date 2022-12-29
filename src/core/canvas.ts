@@ -27,8 +27,10 @@ export class Canvas {
     }
 
     this.ctx.beginPath();
+    // set start pos
     this.ctx.moveTo(points[0].x, points[0].y);
 
+    // then draw the rest of the points
     for (let i = 1; i < points.length; i++) {
       this.ctx.lineTo(points[i].x, points[i].y);
     }

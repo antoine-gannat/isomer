@@ -1,10 +1,10 @@
 import { RESIZE_HANDLER_TIMEOUT } from "../constants";
-import { Image } from "../shapes/image";
 import { Color } from "../misc/color";
 import { Events } from "../misc/events";
 import { Path } from "../misc/path";
 import { Point } from "../misc/point";
 import { Vector } from "../misc/vector";
+import { Image } from "../shapes/image";
 import { Shape } from "../shapes/shape";
 import { Sprite } from "../shapes/sprite";
 import { Position, Transformation } from "../types";
@@ -13,6 +13,8 @@ import { Canvas } from "./canvas";
 type IsomerOptions = {
   // Width of the screen in prisms
   horizontalPrismCount: number;
+  // toggle resize handling
+  handleResize?: boolean;
   lightPosition?: Vector;
   originX?: number;
   originY?: number;
@@ -25,6 +27,7 @@ export class Isomer {
   public scale: number;
   public originX: number;
   public originY: number;
+
   private angle: number;
   private lightPosition: Vector;
   private lightAngle: Vector;
@@ -63,7 +66,8 @@ export class Isomer {
     this.options.listenForUserInputs && this.Events.listenForUserEvents();
 
     // Handle resize of the screen
-    window.addEventListener("resize", this.resizeHandler.bind(this));
+    this.options.handleResize &&
+      window.addEventListener("resize", this.resizeHandler.bind(this));
   }
 
   public resize(newWidth: number, newHeight: number, scale: number): void {
@@ -139,7 +143,8 @@ export class Isomer {
 
   public dispose() {
     this.Events.stopListeningForUserEvents();
-    window.removeEventListener("resize", this.resizeHandler);
+    this.options.handleResize &&
+      window.removeEventListener("resize", this.resizeHandler);
   }
 
   private calculateScale(): number {
@@ -181,10 +186,31 @@ export class Isomer {
       .duplicate()
       .lighten(brightness * this.colorDifference, this.lightColor);
 
+    const range = {
+      minX: Number.MAX_VALUE,
+      maxX: -Number.MAX_VALUE,
+      minY: Number.MAX_VALUE,
+      maxY: -Number.MAX_VALUE,
+    };
+
     const translatedPoints = path.points.map((point) => {
-      return this.translatePoint(point);
+      const translatedPoint = this.translatePoint(point);
+      range.minX = Math.min(range.minX, translatedPoint.x);
+      range.maxX = Math.max(range.maxX, translatedPoint.x);
+      range.minY = Math.min(range.minY, translatedPoint.y);
+      range.maxY = Math.max(range.maxY, translatedPoint.y);
+      return translatedPoint;
     });
 
+    // Leave if all points in the path are out of the canvas.
+    if (
+      range.minX > this.canvas.width ||
+      range.maxX < 0 ||
+      range.minY > this.canvas.height ||
+      range.maxY < 0
+    ) {
+      return;
+    }
     this.canvas.path(translatedPoints, color);
   }
 
