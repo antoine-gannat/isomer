@@ -12,6 +12,7 @@ const isomer = new Isomer(
   {
     horizontalPrismCount: 20,
     listenForUserInputs: true,
+    handleResize: true,
   }
 );
 
@@ -28,6 +29,7 @@ els.push(new Cylinder(new Point(2, 2, 1), 0.5, 35, 2));
 setInterval(() => {
   const start = performance.now();
   isomer.clear();
+  isomer.drawGrid();
   els.forEach((el) => isomer.add(el, new Color(0, 155, 50)));
   // isomer.add(els[0], new Color(0, 155, 50));
   const end = performance.now();

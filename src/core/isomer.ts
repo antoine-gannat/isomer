@@ -88,13 +88,13 @@ export class Isomer {
     this.transformation = this.calculateTransformation();
   }
 
-  public setLightPosition(position: Position) {
+  public setLightPosition(position: Position): void {
     const [x, y, z] = position;
     this.lightPosition = new Vector(x, y, z);
     this.lightAngle = this.lightPosition.normalize();
   }
 
-  public translatePoint(point: Point) {
+  public translatePoint(point: Point): Point {
     const xMap = new Point(
       point.x * this.transformation[0][0],
       point.x * this.transformation[0][1],
@@ -113,12 +113,14 @@ export class Isomer {
     return new Point(x, y, 0);
   }
 
-  public add(item: unknown, baseColor: Color = new Color(120, 120, 120)) {
-    if (Array.isArray(item)) {
-      for (let i = 0; i < item.length; i++) {
-        this.add(item[i], baseColor);
-      }
-    } else if (item instanceof Path) {
+  /**
+   * Draw an item on the canvas
+   */
+  public add(
+    item: Path | Shape | Image | Sprite,
+    baseColor: Color = new Color(120, 120, 120)
+  ): void {
+    if (item instanceof Path) {
       this.addPath(item, baseColor);
     } else if (item instanceof Shape) {
       /* Fetch paths ordered by distance to prevent overlaps */
@@ -127,13 +129,44 @@ export class Isomer {
       for (let j = 0; j < paths.length; j++) {
         this.addPath(paths[j], baseColor);
       }
-    } else if (item instanceof Image || item instanceof Sprite) {
+    } else if (item instanceof Image) {
       item.render(this);
     }
   }
 
+  /**
+   * Clear the canvas.
+   */
   public clear() {
     this.canvas.clear();
+  }
+
+  /**
+   * Draw a grid on the canvas, useful for debugging.
+   */
+  public drawGrid() {
+    for (
+      let x = -this.options.horizontalPrismCount;
+      x < this.options.horizontalPrismCount;
+      x++
+    ) {
+      for (
+        let y = -this.options.horizontalPrismCount;
+        y < this.options.horizontalPrismCount;
+        y++
+      ) {
+        this.canvas.path(
+          [
+            this.translatePoint(new Point(x, y, 0)),
+            this.translatePoint(new Point(x + 1, y, 0)),
+            this.translatePoint(new Point(x + 1, y + 1, 0)),
+            this.translatePoint(new Point(x, y + 1, 0)),
+          ],
+          new Color(0, 0, 0),
+          /* fill */ false
+        );
+      }
+    }
   }
 
   public setOrigin(x: number, y: number): void {

@@ -21,7 +21,7 @@ export class Canvas {
     return this;
   }
 
-  public path(points: Point[], color: Color) {
+  public path(points: Point[], color: Color, fill: boolean = true) {
     if (!this.ctx) {
       throw new Error("context is null");
     }
@@ -43,7 +43,7 @@ export class Canvas {
     this.ctx.fillStyle = color.toHex();
     this.ctx.strokeStyle = color.toHex();
     this.ctx.stroke();
-    this.ctx.fill();
+    fill && this.ctx.fill();
     this.ctx.restore();
   }
 }
