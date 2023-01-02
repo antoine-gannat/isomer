@@ -1,26 +1,45 @@
-import { Isomer } from "../core/Isomer";
-import { Point } from "../misc/point";
-import { Size } from "../misc/size";
-import { Prism } from "../shapes/prism";
-import { Cylinder } from "../shapes/cylinder";
-import { Pyramid } from "../shapes/pyramid";
-import { Shape } from "../shapes/shape";
-import { Color } from "../misc/color";
+import { Engine } from "../core/engine/engine";
+import { Scene } from "../core/engine/scene";
+import { Cylinder, Prism, Pyramid } from "../drawables";
+import { Color, Point, Size } from "../utilities";
 
-const isomer = new Isomer("canvas-1", {
-  horizontalPrismCount: 20,
-  listenForUserInputs: true,
-  handleResize: true,
+const engine = new Engine({ canvasId: "canvas-1", debug: true });
+const scene = new Scene();
+
+const prism = new Prism(
+  new Point(0, 0, 0),
+  new Size(3, 3, 1),
+  new Color(230, 50, 50)
+);
+
+const cylinder = new Cylinder(
+  new Point(1, 1, 0),
+  new Size(1, 3),
+  new Color(150, 100, 250)
+);
+
+const pyramid = new Pyramid(
+  new Point(0, 3, 0),
+  new Size(1, 1, 2),
+  new Color(50, 100, 250),
+  0
+);
+
+scene.draw([prism, cylinder, pyramid]);
+
+engine.play(scene);
+
+engine.onTick(() => {
+  const pos = prism.getPosition();
+  const size = prism.getSize();
+  if (pos.x <= 10) {
+    pos.x += 0.1;
+    prism.move(pos);
+  } else {
+    pos.x = -7;
+    size.width += 1;
+    prism.resize(size);
+    prism.move(pos);
+  }
 });
-
-const els: Shape[] = [];
-
-els.push(new Prism(Point.Origin(), new Size(3, 3, 1), new Color(230, 50, 50)));
-els.push(new Pyramid(new Point(0, 2, 1), undefined, new Color(40, 250, 50)));
-els.push(new Cylinder(new Point(2, 2, 1), 0.5, 35, 2, new Color(230, 10, 150)));
-
-setInterval(() => {
-  isomer.clear();
-  isomer.debugGrid();
-  els.forEach((el) => isomer.draw(el));
-}, 1000 / 60);
+engine.start();

@@ -1,3 +1,4 @@
+import { DEFAULT_VERTICES_COUNT } from "../constants";
 import { ScaleBy, TranslateBy } from "../types";
 import { Point } from "./point";
 
@@ -13,7 +14,11 @@ export class Path {
     ]);
   }
 
-  public static Circle(origin: Point, radius: number, vertices = 20) {
+  public static Circle(
+    origin: Point,
+    radius: number,
+    vertices = DEFAULT_VERTICES_COUNT
+  ) {
     const path = new Path();
 
     for (let i = 0; i < vertices; i++) {
@@ -89,5 +94,17 @@ export class Path {
     }, 0);
 
     return sum / (this.points.length || 1);
+  }
+
+  public offset(xOffset = 0, yOffset = 0, zOffset = 0): Path {
+    const copy = this.duplicate();
+
+    copy.points.forEach((point) => {
+      point.x += xOffset;
+      point.y += yOffset;
+      point.z += zOffset;
+    });
+
+    return copy;
   }
 }

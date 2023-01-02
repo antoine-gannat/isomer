@@ -1,10 +1,6 @@
-export { Canvas } from "./core/canvas";
-export { Image } from "./shapes/image";
-export { Sprite } from "./shapes/sprite";
-export { Color } from "./misc/color";
-export { Isomer } from "./core/isomer";
-export { Path } from "./misc/path";
-export { Point } from "./misc/point";
-export { Shape } from "./shapes/shape";
-export { Size } from "./misc/size";
-export { Vector } from "./misc/vector";
+export { Engine } from "./core/engine/engine";
+export { Scene } from "./core/engine/scene";
+export { Drawable } from "./core/rendering/drawable";
+
+export * from "./drawables";
+export * from "./utilities";

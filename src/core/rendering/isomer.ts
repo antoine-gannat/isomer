@@ -1,22 +1,14 @@
-import { RESIZE_HANDLER_TIMEOUT } from "../constants";
-import { Color } from "../misc/color";
-import { Events } from "../misc/events";
-import { Path } from "../misc/path";
-import { Point } from "../misc/point";
-import { Vector } from "../misc/vector";
-import { Drawable, Position, Transformation } from "../types";
+import { Transformation } from "../../types";
+import { Color, Path, Point, Vector } from "../../utilities";
 import { Canvas } from "./canvas";
 
 type IsomerOptions = {
   // Width of the screen in prisms
   horizontalPrismCount: number;
-  // toggle resize handling
-  handleResize?: boolean;
   lightPosition?: Vector;
   originX?: number;
   originY?: number;
   lightColor?: Color;
-  listenForUserInputs?: boolean;
 };
 
 export class Isomer {
@@ -31,8 +23,6 @@ export class Isomer {
   private colorDifference: number;
   private lightColor: Color;
   private transformation: Transformation;
-  private resizeTimeout: ReturnType<typeof setTimeout>;
-  private Events: Events;
 
   public constructor(
     canvas: HTMLCanvasElement | string,
@@ -62,16 +52,13 @@ export class Isomer {
      */
     this.colorDifference = 0.2;
     this.lightColor = this.options.lightColor || new Color(255, 255, 255);
-    // Handle user navigation events
-    this.Events = new Events(this);
-    this.options.listenForUserInputs && this.Events.listenForUserEvents();
-
-    // Handle resize of the screen
-    this.options.handleResize &&
-      window.addEventListener("resize", this.resizeHandler.bind(this));
   }
 
-  public resize(newWidth: number, newHeight: number, scale: number): void {
+  public resize(
+    newWidth: number,
+    newHeight: number,
+    scale: number = this.calculateScale()
+  ): void {
     this.canvas.height = this.canvas.element.height = newHeight;
     this.canvas.width = this.canvas.element.width = newWidth;
     this.setScale(scale);
@@ -89,7 +76,7 @@ export class Isomer {
     this.transformation = this.calculateTransformation();
   }
 
-  public setLightPosition(position: Position): void {
+  public setLightPosition(position: [number, number, number]): void {
     const [x, y, z] = position;
     this.lightPosition = new Vector(x, y, z);
     this.lightAngle = this.lightPosition.normalize();
@@ -112,13 +99,6 @@ export class Isomer {
     const y = this.originY - xMap.y - yMap.y - point.z * this.scale;
 
     return new Point(x, y, 0);
-  }
-
-  /**
-   * Draw an item on the canvas.
-   */
-  public draw(item: Drawable): void {
-    item.render(this);
   }
 
   /**
@@ -159,12 +139,6 @@ export class Isomer {
   public setOrigin(x: number, y: number): void {
     this.originX = x;
     this.originY = y;
-  }
-
-  public dispose() {
-    this.Events.stopListeningForUserEvents();
-    this.options.handleResize &&
-      window.removeEventListener("resize", this.resizeHandler);
   }
 
   /**
@@ -216,14 +190,6 @@ export class Isomer {
 
   private calculateScale(): number {
     return Math.round(window.innerWidth / this.options.horizontalPrismCount);
-  }
-
-  private resizeHandler() {
-    // use timeout to only call the resize handler once instead of calling it at every event
-    this.resizeTimeout && clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => {
-      this.resize(window.innerWidth, window.innerHeight, this.calculateScale());
-    }, RESIZE_HANDLER_TIMEOUT);
   }
 
   private calculateOrigins(): void {
