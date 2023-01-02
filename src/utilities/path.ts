@@ -1,39 +1,8 @@
-import { DEFAULT_VERTICES_COUNT } from "../constants";
 import { ScaleBy, TranslateBy } from "../types";
 import { Point } from "./point";
 
 export class Path {
   public points: Point[];
-
-  public static Rectangle(origin: Point, width = 1, height = 1) {
-    return new Path([
-      origin,
-      new Point(origin.x + width, origin.y, origin.z),
-      new Point(origin.x + width, origin.y + height, origin.z),
-      new Point(origin.x, origin.y + height, origin.z),
-    ]);
-  }
-
-  public static Circle(
-    origin: Point,
-    radius: number,
-    vertices = DEFAULT_VERTICES_COUNT
-  ) {
-    const path = new Path();
-
-    for (let i = 0; i < vertices; i++) {
-      path.push(
-        new Point(
-          radius * Math.cos((i * 2 * Math.PI) / vertices),
-          radius * Math.sin((i * 2 * Math.PI) / vertices),
-          0
-        )
-      );
-    }
-
-    path.translate([origin.x, origin.y, origin.z]);
-    return path;
-  }
 
   public constructor(points: Point[] = []) {
     this.points = points.map((point) => point.duplicate());

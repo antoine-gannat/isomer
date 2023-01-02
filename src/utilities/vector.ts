@@ -1,11 +1,11 @@
 import { Point } from "./point";
 
 export class Vector {
+  public constructor(public i: number, public j: number, public k: number) {}
+
   public static FromTwoPoints(p1: Point, p2: Point) {
     return new Vector(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
   }
-
-  public constructor(public i: number, public j: number, public k: number) {}
 
   public crossProduct(v2: Vector) {
     const i = this.j * v2.k - v2.j * this.k;

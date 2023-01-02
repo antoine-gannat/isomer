@@ -1,3 +1,4 @@
+import { DEFAULT_VERTICES_COUNT } from "../constants";
 import { Drawable } from "../core/rendering/drawable";
 import { Path, Point } from "../utilities";
 
@@ -6,7 +7,7 @@ export class Cylinder extends Drawable {
     const { width, height } = this.size;
     const radius = width / 2; // radius is width divided by 2
     const origin = Point.FromOrigin([radius, radius, 0]);
-    const circle = Path.Circle(origin, radius);
+    const circle = this.createCircle(origin, radius);
 
     const topPath = circle.duplicate().translate([0, 0, height]);
 
@@ -24,5 +25,26 @@ export class Cylinder extends Drawable {
         ])
       );
     }
+  }
+
+  private createCircle(
+    origin: Point,
+    radius: number,
+    vertices = DEFAULT_VERTICES_COUNT
+  ) {
+    const path = new Path();
+
+    for (let i = 0; i < vertices; i++) {
+      path.push(
+        new Point(
+          radius * Math.cos((i * 2 * Math.PI) / vertices),
+          radius * Math.sin((i * 2 * Math.PI) / vertices),
+          0
+        )
+      );
+    }
+
+    path.translate([origin.x, origin.y, origin.z]);
+    return path;
   }
 }

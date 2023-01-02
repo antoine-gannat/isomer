@@ -1,6 +1,8 @@
 import { ScaleBy, TranslateBy } from "../types";
 
 export class Point {
+  public constructor(public x: number, public y: number, public z: number) {}
+
   public static Origin() {
     return new Point(0, 0, 0);
   }
@@ -14,8 +16,6 @@ export class Point {
     point.translate(delta);
     return point;
   }
-
-  public constructor(public x: number, public y: number, public z: number) {}
 
   public duplicate() {
     return Point.FromPoint(this);
