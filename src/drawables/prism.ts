@@ -1,12 +1,11 @@
 import { Drawable } from "../core/rendering/drawable";
-import { Path } from "../misc/path";
-import { Point } from "../misc/point";
+import { Path, Point } from "../utilities";
 
 export class Prism extends Drawable {
-  protected buildPath(): void {
+  protected createPath(): void {
     const { width: dx = 1, height: dy = 1, depth: dz = 1 } = this.size;
 
-    const origin: Point = new Point(0, 0, 0);
+    const origin = Point.Origin(); // origin is 0, 0, 0
 
     /* Squares parallel to the x-axis */
     const face1a = new Path([

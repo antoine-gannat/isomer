@@ -1,3 +1,4 @@
+import { DEFAULT_VERTICES_COUNT } from "../constants";
 import { ScaleBy, TranslateBy } from "../types";
 import { Point } from "./point";
 
@@ -13,7 +14,11 @@ export class Path {
     ]);
   }
 
-  public static Circle(origin: Point, radius: number, vertices = 20) {
+  public static Circle(
+    origin: Point,
+    radius: number,
+    vertices = DEFAULT_VERTICES_COUNT
+  ) {
     const path = new Path();
 
     for (let i = 0; i < vertices; i++) {

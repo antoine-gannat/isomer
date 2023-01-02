@@ -1,10 +1,7 @@
 import { RESIZE_HANDLER_TIMEOUT } from "../../constants";
-import { Color } from "../../misc/color";
-import { Events } from "../../misc/events";
-import { Path } from "../../misc/path";
-import { Point } from "../../misc/point";
-import { Vector } from "../../misc/vector";
 import { Transformation } from "../../types";
+import { Color, Path, Point, Vector } from "../../utilities";
+import { Events } from "../../utilities/events";
 import { Canvas } from "./canvas";
 
 type IsomerOptions = {

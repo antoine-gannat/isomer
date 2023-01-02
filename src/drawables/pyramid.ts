@@ -1,14 +1,11 @@
-import { Color } from "../misc/color";
-import { Path } from "../misc/path";
-import { Point } from "../misc/point";
-import { Size } from "../misc/size";
-import { Shape } from "./shape";
+import { Drawable } from "../core/rendering/drawable";
+import { Path, Point } from "../utilities";
 
-export class Pyramid extends Shape {
-  public constructor(origin: Point, dimensions?: Size, color?: Color) {
-    super(undefined, color);
-    const { width: dx = 1, height: dy = 1, depth: dz = 1 } = dimensions || {};
+export class Pyramid extends Drawable {
+  protected createPath(): void {
+    const { width: dx = 1, height: dy = 1, depth: dz = 1 } = this.size;
 
+    const origin = Point.Origin();
     /* Path parallel to the x-axis */
     const face1a = new Path([
       origin,

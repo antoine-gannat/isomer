@@ -1,5 +1,5 @@
-import { Color } from "../../misc/color";
-import { Point } from "../../misc/point";
+import { Color } from "../../utilities/color";
+import { Point } from "../../utilities/point";
 
 export class Canvas {
   public width: number;
@@ -8,24 +8,19 @@ export class Canvas {
 
   public constructor(public element: HTMLCanvasElement) {
     this.ctx = element.getContext("2d");
+    if (!this.ctx) {
+      throw new Error("Fatal: Unable to get the context from the canvas.");
+    }
     this.width = element.width;
     this.height = element.height;
   }
 
   public clear() {
-    if (!this.ctx) {
-      throw new Error("context is null");
-    }
-
     this.ctx.clearRect(0, 0, this.width, this.height);
     return this;
   }
 
   public path(points: Point[], color: Color, fill: boolean = true) {
-    if (!this.ctx) {
-      throw new Error("context is null");
-    }
-
     this.ctx.beginPath();
     // set start pos
     this.ctx.moveTo(points[0].x, points[0].y);
