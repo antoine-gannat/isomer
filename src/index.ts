@@ -1,8 +1,7 @@
-export { Canvas } from "./core/canvas";
+export { Canvas } from "./core/rendering/canvas";
 export { Image } from "./shapes/image";
 export { Sprite } from "./shapes/sprite";
 export { Color } from "./misc/color";
-export { Isomer } from "./core/isomer";
 export { Path } from "./misc/path";
 export { Point } from "./misc/point";
 export { Shape } from "./shapes/shape";

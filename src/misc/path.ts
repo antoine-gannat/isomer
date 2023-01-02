@@ -90,4 +90,16 @@ export class Path {
 
     return sum / (this.points.length || 1);
   }
+
+  public offset(xOffset = 0, yOffset = 0, zOffset = 0): Path {
+    const copy = this.duplicate();
+
+    copy.points.forEach((point) => {
+      point.x += xOffset;
+      point.y += yOffset;
+      point.z += zOffset;
+    });
+
+    return copy;
+  }
 }

@@ -1,13 +1,12 @@
-import { Color } from "../misc/color";
+import { Drawable } from "../core/rendering/drawable";
 import { Path } from "../misc/path";
 import { Point } from "../misc/point";
-import { Size } from "../misc/size";
-import { Shape } from "./shape";
 
-export class Prism extends Shape {
-  public constructor(origin: Point, dimensions: Size, color?: Color) {
-    super(undefined, color);
-    const { width: dx = 1, height: dy = 1, depth: dz = 1 } = dimensions;
+export class Prism extends Drawable {
+  protected buildPath(): void {
+    const { width: dx = 1, height: dy = 1, depth: dz = 1 } = this.size;
+
+    const origin: Point = new Point(0, 0, 0);
 
     /* Squares parallel to the x-axis */
     const face1a = new Path([

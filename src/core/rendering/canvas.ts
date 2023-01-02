@@ -1,5 +1,5 @@
-import { Color } from "../misc/color";
-import { Point } from "../misc/point";
+import { Color } from "../../misc/color";
+import { Point } from "../../misc/point";
 
 export class Canvas {
   public width: number;

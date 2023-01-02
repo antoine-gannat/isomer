@@ -4,7 +4,7 @@ import { Path } from "../misc/path";
 import { Point } from "../misc/point";
 import { ScaleBy, TranslateBy } from "../types";
 
-import type { Isomer } from "../core/Isomer";
+import type { Isomer } from "../core/rendering/Isomer";
 
 export class Shape {
   public paths: Path[];

@@ -1,4 +1,4 @@
-import { Isomer } from "../core/Isomer";
+import { Isomer } from "../core/rendering/Isomer";
 import { Point } from "../misc/Point";
 
 /**

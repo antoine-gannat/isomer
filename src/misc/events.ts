@@ -1,5 +1,5 @@
 import { MAX_SCALE, MIN_SCALE } from "../constants";
-import { Isomer } from "../core/isomer";
+import { Isomer } from "../core/rendering/isomer";
 
 export class Events {
   private clickPosition: { x: number; y: number };

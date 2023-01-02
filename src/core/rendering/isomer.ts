@@ -1,10 +1,10 @@
-import { RESIZE_HANDLER_TIMEOUT } from "../constants";
-import { Color } from "../misc/color";
-import { Events } from "../misc/events";
-import { Path } from "../misc/path";
-import { Point } from "../misc/point";
-import { Vector } from "../misc/vector";
-import { Drawable, Position, Transformation } from "../types";
+import { RESIZE_HANDLER_TIMEOUT } from "../../constants";
+import { Color } from "../../misc/color";
+import { Events } from "../../misc/events";
+import { Path } from "../../misc/path";
+import { Point } from "../../misc/point";
+import { Vector } from "../../misc/vector";
+import { Transformation } from "../../types";
 import { Canvas } from "./canvas";
 
 type IsomerOptions = {
@@ -89,7 +89,7 @@ export class Isomer {
     this.transformation = this.calculateTransformation();
   }
 
-  public setLightPosition(position: Position): void {
+  public setLightPosition(position: [number, number, number]): void {
     const [x, y, z] = position;
     this.lightPosition = new Vector(x, y, z);
     this.lightAngle = this.lightPosition.normalize();
@@ -112,13 +112,6 @@ export class Isomer {
     const y = this.originY - xMap.y - yMap.y - point.z * this.scale;
 
     return new Point(x, y, 0);
-  }
-
-  /**
-   * Draw an item on the canvas.
-   */
-  public draw(item: Drawable): void {
-    item.render(this);
   }
 
   /**
