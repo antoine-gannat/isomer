@@ -13,8 +13,7 @@ export abstract class Drawable {
   public constructor(
     protected position: Point,
     protected size: Size,
-    public color: Color,
-    public zIndex: number = 1
+    public color: Color
   ) {
     this.createPath();
     this.orderPaths();

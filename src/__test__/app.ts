@@ -11,6 +11,16 @@ const prism = new Prism(
   new Size(3, 3, 1),
   new Color(230, 50, 50)
 );
+const cube = new Prism(
+  new Point(0, 4, 0),
+  new Size(1, 1, 1),
+  new Color(230, 50, 50)
+);
+const cube2 = new Prism(
+  new Point(1, 3, 0),
+  new Size(1, 1, 1),
+  new Color(230, 50, 50)
+);
 
 const cylinder = new Cylinder(
   new Point(1, 1, 0),
@@ -21,11 +31,10 @@ const cylinder = new Cylinder(
 const pyramid = new Pyramid(
   new Point(0, 3, 0),
   new Size(1, 1, 2),
-  new Color(50, 100, 250),
-  0
+  new Color(50, 100, 250)
 );
 
-scene.draw([prism, cylinder, pyramid]);
+scene.draw([prism, cylinder, pyramid, cube, cube2]);
 
 engine.play(scene);
 

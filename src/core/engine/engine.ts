@@ -83,6 +83,8 @@ export class Engine {
     debugPanel.setAttribute("data-last-update", Date.now().toString());
     debugPanel.innerHTML = `MAX FPS: ${(1000 / frameDuration).toPrecision(
       4
-    )} [${frameDuration.toPrecision(2)}ms]`;
+    )} [${frameDuration.toPrecision(2)}ms/${ENGINE_REFRESH_RATE.toPrecision(
+      2
+    )}ms]`;
   }
 }

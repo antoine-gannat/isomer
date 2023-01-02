@@ -34,9 +34,8 @@ export class Isomer {
     );
     this.angle = Math.PI / 6;
 
-    this.setScale(this.calculateScale());
-
-    this.calculateOrigins();
+    // init the height and width of the canvas
+    this.resize(window.innerWidth, window.innerHeight);
     /**
      * Light source as defined as the angle from
      * the object to the source.
