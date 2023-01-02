@@ -1,19 +1,20 @@
-import { MAX_SCALE, MIN_SCALE } from "../constants";
-import { Isomer } from "../core/rendering/isomer";
+import { MAX_SCALE, MIN_SCALE, RESIZE_HANDLER_TIMEOUT } from "../../constants";
+import { Isomer } from "../rendering/isomer";
 
 export class Events {
   private clickPosition: { x: number; y: number };
   private previousTouches: { x: number; y: number }[] = [];
+  private resizeTimeout: ReturnType<typeof setTimeout>;
 
-  public constructor(private Isomer: Isomer) {}
+  public constructor(private isomer: Isomer) {}
 
   private zoom(delta: number, scrollSpeed = 2) {
     // scroll up
-    if (delta > 0 && this.Isomer.scale - scrollSpeed > MIN_SCALE) {
-      this.Isomer.setScale(this.Isomer.scale - scrollSpeed);
-    } else if (delta < 0 && this.Isomer.scale + scrollSpeed < MAX_SCALE) {
+    if (delta > 0 && this.isomer.scale - scrollSpeed > MIN_SCALE) {
+      this.isomer.setScale(this.isomer.scale - scrollSpeed);
+    } else if (delta < 0 && this.isomer.scale + scrollSpeed < MAX_SCALE) {
       // scroll down
-      this.Isomer.setScale(this.Isomer.scale + scrollSpeed);
+      this.isomer.setScale(this.isomer.scale + scrollSpeed);
     }
   }
 
@@ -80,29 +81,48 @@ export class Events {
     this.clickPosition.y = clientY;
 
     // change the canvas origin based on the delta
-    this.Isomer.setOrigin(
-      this.Isomer.originX + deltaX,
-      this.Isomer.originY + deltaY
+    this.isomer.setOrigin(
+      this.isomer.originX + deltaX,
+      this.isomer.originY + deltaY
     );
   }
 
-  public listenForUserEvents() {
-    const canvas = this.Isomer.canvas.element;
+  private resizeHandler() {
+    // use timeout to only call the resize handler once instead of calling it at every event
+    this.resizeTimeout && clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => {
+      this.isomer.resize(window.innerWidth, window.innerHeight);
+    }, RESIZE_HANDLER_TIMEOUT);
+  }
+
+  public startListening() {
+    const canvas = this.isomer.canvas.element;
+    // listen for resize
+    window.addEventListener("resize", this.resizeHandler.bind(this));
     // listen for wheel events to zoom in and out
-    canvas.addEventListener("wheel", this.wheelHandler.bind(this));
+    canvas.addEventListener("wheel", this.wheelHandler.bind(this), {
+      passive: false,
+    });
 
     // listen for mouse move events to move the canvas around
     canvas.addEventListener("mousedown", this.mouseDownHandler.bind(this));
-    canvas.addEventListener("touchstart", this.mouseDownHandler.bind(this));
+    canvas.addEventListener("touchstart", this.mouseDownHandler.bind(this), {
+      passive: false,
+    });
     canvas.addEventListener("mouseup", this.mouseUpHandler.bind(this));
     canvas.addEventListener("touchend", this.mouseUpHandler.bind(this));
-    canvas.addEventListener("touchmove", this.mouseMoveHandler.bind(this));
+    canvas.addEventListener("touchmove", this.mouseMoveHandler.bind(this), {
+      passive: false,
+    });
     canvas.addEventListener("mousemove", this.mouseMoveHandler.bind(this));
   }
 
-  public stopListeningForUserEvents() {
-    const canvas = this.Isomer.canvas.element;
+  public stopListening() {
+    const canvas = this.isomer.canvas.element;
+    // clear timeout if set
+    this.resizeTimeout && clearTimeout(this.resizeTimeout);
 
+    window.removeEventListener("resize", this.resizeHandler.bind(this));
     canvas.removeEventListener("wheel", this.wheelHandler.bind(this));
     canvas.removeEventListener("mousedown", this.mouseDownHandler.bind(this));
     canvas.removeEventListener("touchstart", this.mouseDownHandler.bind(this));

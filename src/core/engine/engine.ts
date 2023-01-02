@@ -1,5 +1,6 @@
 import { ENGINE_REFRESH_RATE } from "../../constants";
 import { Isomer } from "../rendering/Isomer";
+import { Events } from "./events";
 import { Scene } from "./scene";
 
 interface IEngineOptions {
@@ -12,6 +13,7 @@ export class Engine {
   private interval: number = -1;
   private onTickListener: (() => void) | undefined = undefined;
   private isomer: Isomer;
+  private eventManager: Events;
 
   private activeScene: Scene | null = null;
 
@@ -19,10 +21,12 @@ export class Engine {
     this.isomer = new Isomer(this.options.canvasId, {
       horizontalPrismCount: 20,
     });
+    this.eventManager = new Events(this.isomer);
   }
 
   // Start the engine loop
   public start() {
+    this.eventManager.startListening();
     this.interval = setInterval(() => {
       const start = performance.now();
       this.mainLoop();
@@ -32,6 +36,7 @@ export class Engine {
 
   // Stop the engine loop
   public stop() {
+    this.eventManager.stopListening();
     this.interval != -1 && clearInterval(this.interval);
   }
 

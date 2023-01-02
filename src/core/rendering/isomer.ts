@@ -1,19 +1,14 @@
-import { RESIZE_HANDLER_TIMEOUT } from "../../constants";
 import { Transformation } from "../../types";
 import { Color, Path, Point, Vector } from "../../utilities";
-import { Events } from "../../utilities/events";
 import { Canvas } from "./canvas";
 
 type IsomerOptions = {
   // Width of the screen in prisms
   horizontalPrismCount: number;
-  // toggle resize handling
-  handleResize?: boolean;
   lightPosition?: Vector;
   originX?: number;
   originY?: number;
   lightColor?: Color;
-  listenForUserInputs?: boolean;
 };
 
 export class Isomer {
@@ -28,8 +23,6 @@ export class Isomer {
   private colorDifference: number;
   private lightColor: Color;
   private transformation: Transformation;
-  private resizeTimeout: ReturnType<typeof setTimeout>;
-  private Events: Events;
 
   public constructor(
     canvas: HTMLCanvasElement | string,
@@ -59,16 +52,13 @@ export class Isomer {
      */
     this.colorDifference = 0.2;
     this.lightColor = this.options.lightColor || new Color(255, 255, 255);
-    // Handle user navigation events
-    this.Events = new Events(this);
-    this.options.listenForUserInputs && this.Events.listenForUserEvents();
-
-    // Handle resize of the screen
-    this.options.handleResize &&
-      window.addEventListener("resize", this.resizeHandler.bind(this));
   }
 
-  public resize(newWidth: number, newHeight: number, scale: number): void {
+  public resize(
+    newWidth: number,
+    newHeight: number,
+    scale: number = this.calculateScale()
+  ): void {
     this.canvas.height = this.canvas.element.height = newHeight;
     this.canvas.width = this.canvas.element.width = newWidth;
     this.setScale(scale);
@@ -151,12 +141,6 @@ export class Isomer {
     this.originY = y;
   }
 
-  public dispose() {
-    this.Events.stopListeningForUserEvents();
-    this.options.handleResize &&
-      window.removeEventListener("resize", this.resizeHandler);
-  }
-
   /**
    * Draw a path on the canvas.
    */
@@ -206,14 +190,6 @@ export class Isomer {
 
   private calculateScale(): number {
     return Math.round(window.innerWidth / this.options.horizontalPrismCount);
-  }
-
-  private resizeHandler() {
-    // use timeout to only call the resize handler once instead of calling it at every event
-    this.resizeTimeout && clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => {
-      this.resize(window.innerWidth, window.innerHeight, this.calculateScale());
-    }, RESIZE_HANDLER_TIMEOUT);
   }
 
   private calculateOrigins(): void {
