@@ -29,17 +29,17 @@ scene.draw([prism, cylinder, pyramid]);
 
 engine.play(scene);
 
+let toggle = false;
 engine.onTick(() => {
   const pos = prism.getPosition();
-  const size = prism.getSize();
-  if (pos.x <= 10) {
+  if (toggle) {
+    pos.x -= 0.1;
+    prism.move(pos);
+    if (pos.x <= -10) toggle = false;
+  } else {
     pos.x += 0.1;
     prism.move(pos);
-  } else {
-    pos.x = -7;
-    size.width += 1;
-    prism.resize(size);
-    prism.move(pos);
+    if (pos.x >= 10) toggle = true;
   }
 });
 engine.start();

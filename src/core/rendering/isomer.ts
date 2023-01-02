@@ -1,4 +1,3 @@
-import { Transformation } from "../../types";
 import { Color, Path, Point, Vector } from "../../utilities";
 import { Canvas } from "./canvas";
 
@@ -22,7 +21,7 @@ export class Isomer {
   private lightAngle: Vector;
   private colorDifference: number;
   private lightColor: Color;
-  private transformation: Transformation;
+  private transformation: number[][];
 
   public constructor(
     canvas: HTMLCanvasElement | string,

@@ -5,6 +5,7 @@ export class Events {
   private clickPosition: { x: number; y: number };
   private previousTouches: { x: number; y: number }[] = [];
   private resizeTimeout: ReturnType<typeof setTimeout>;
+  private dragHappened = false;
 
   public constructor(private isomer: Isomer) {}
 
@@ -25,6 +26,7 @@ export class Events {
 
   private mouseDownHandler(e: MouseEvent | TouchEvent) {
     e.preventDefault();
+    // if touch event
     if (e instanceof TouchEvent && e.touches.length > 1) {
       for (let i = 0; i < e.touches.length; i++) {
         this.previousTouches.push({
@@ -39,14 +41,20 @@ export class Events {
   }
 
   private mouseUpHandler() {
+    // if the mouse didn't move, it's a click
+    if (!this.dragHappened) {
+      // TODO: Implement click handler
+    }
     this.clickPosition = undefined;
     this.previousTouches = [];
+    this.dragHappened = false;
   }
 
   private mouseMoveHandler(e: MouseEvent | TouchEvent) {
     if (!this.clickPosition) {
       return;
     }
+    this.dragHappened = true;
     e.preventDefault();
     // check for pinch zoom
     if (

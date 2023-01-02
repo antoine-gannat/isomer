@@ -3,7 +3,7 @@ import { Color } from "./utilities";
 // events
 export const MAX_SCALE = 40;
 export const MIN_SCALE = 10;
-export const RESIZE_HANDLER_TIMEOUT = 200;
+export const RESIZE_HANDLER_TIMEOUT = 100;
 
 // colors
 export const DEFAULT_COLOR = new Color(120, 120, 120);
