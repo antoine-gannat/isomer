@@ -20,7 +20,7 @@ export class Canvas {
     return this;
   }
 
-  public path(points: Point[], color: Color, fill: boolean = true) {
+  public path(points: Point[], color: Color, fill = true) {
     this.ctx.beginPath();
     // set start pos
     this.ctx.moveTo(points[0].x, points[0].y);

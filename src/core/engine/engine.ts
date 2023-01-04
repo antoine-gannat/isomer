@@ -10,7 +10,7 @@ interface IEngineOptions {
 }
 
 export class Engine {
-  private interval: number = -1;
+  private interval = -1;
   private onTickListener: (() => void) | undefined = undefined;
   private isomer: Isomer;
   private eventManager: Events;
@@ -47,6 +47,7 @@ export class Engine {
 
   // Set the active scene
   public play(scene: Scene | null) {
+    scene.init(this.isomer, this.eventManager);
     this.activeScene = scene;
   }
 
@@ -54,7 +55,7 @@ export class Engine {
     this.onTickListener?.();
     this.isomer.clear();
     this.isDebug() && this.isomer.debugGrid();
-    this.activeScene && this.activeScene.render(this.isomer);
+    this.activeScene && this.activeScene.render();
   }
 
   private isDebug(): boolean {
